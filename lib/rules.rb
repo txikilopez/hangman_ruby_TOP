@@ -4,7 +4,6 @@ class Rules
     welcome_message(hidden_word, lifes)
   end
 
-
   def present_word(word_array)
     word_array.join(' ')
   end
@@ -23,7 +22,5 @@ class Rules
     end
     character.downcase
   end
-
-
 
 end 
