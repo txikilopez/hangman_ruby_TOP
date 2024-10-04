@@ -25,40 +25,45 @@ class GuessWord < Rules
 
   def guessing
     letter_repository = []
-    Rules.new(@guess_array, LIFES)
+    show_instructions = Rules.new(@guess_array, LIFES) #welcome message
+    
+    #first turn
     letter_guessed = check_input(gets.chomp, letter_repository)
     letter_repository.push(letter_guessed)
 
     check_guessed_letter(letter_guessed)
+    
+    letter_success = (letter_repository & @guess_array).length > 0
 
-    @turn_count +=1 unless (letter_repository & @guess_array).length > 0
+    @turn_count +=1 unless letter_success
 
+    message = letter_check_message(letter_guessed, letter_success)
+
+    #subsequent turns
     while @turn_count <= LIFES
-      puts `clear`
-      puts "\nThe word to find is '#{present_word(@guess_array)}'"
-      puts "You have #{LIFES - @turn_count + 1} tries left"
-      puts "Already chosen letter: [#{present_word(letter_repository - @guess_array)}]"
-      puts "Please enter a letter:"
 
-      letter_guessed = gets.chomp
-      letter_guessed = check_input(letter_guessed, letter_repository) 
+      turn_message(@guess_array, LIFES, @turn_count, letter_repository, message)
+
+      letter_guessed = check_input(gets.chomp, letter_repository) 
       letter_repository.push(letter_guessed)
+      
       prior_guess_array = @guess_array.dup
 
       check_guessed_letter(letter_guessed)
 
       if prior_guess_array == @guess_array
-          puts "#{letter_guessed} was not in the key word"
+        message = letter_check_message(letter_guessed, false)
           @turn_count += 1
       elsif @guess_array == @key_word
-        puts "You found the word! '#{@key_word.join('')}' was the secret word. Congrats"
+        puts `clear`
+        puts "WINNER!! '#{@key_word.join('')}' was the word. Congrats"
         break
       else
-        puts "\ngreat, #{letter_guessed} was in the key word\n"
+        message = letter_check_message(letter_guessed, true)
       end
     end
 
-    puts "You lost xD, keyword was '#{present_word(@key_word)}'" if @turn_count >= LIFES
+    puts "You lost, word was '#{present_word(@key_word)}'" if @turn_count >= LIFES
 
   end
 end
