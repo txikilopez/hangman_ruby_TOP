@@ -1,4 +1,4 @@
-require_relative 'drawing.rb'
+require_relative 'drawing'
 require 'yaml'
 
 class Rules
@@ -18,7 +18,7 @@ class Rules
     puts "You will have #{lifes} turns to guess a secret word."
     puts "The word to find is: #{present_word(hidden_word)}"
     puts drawing(1)
-    puts "\nPlease enter a letter:"       
+    puts "\nPlease enter a letter:"
   end
 
   def check_input(character, letter_repository, turn_count, guess_array, keyword)
@@ -26,15 +26,15 @@ class Rules
     if character == 'save'
       puts 'Saving game and exiting...'
       saved_info = to_yaml(guess_array, turn_count, letter_repository, keyword)
-      File.write('saved_file.yaml',saved_info)
+      File.write('saved_file.yaml', saved_info)
       exit
     end
 
-    while character.length != 1 || (character =~ /[a-z]/) != 0 || letter_repository.include?(character) #|| character.class != String 
+    while character.length != 1 || (character =~ /[a-z]/) != 0 || letter_repository.include?(character)
       if character == 'save'
         puts 'Saving game and exiting...'
         saved_info = to_yaml(guess_array, turn_count, letter_repository, keyword)
-        File.write('saved_file.yaml',saved_info)
+        File.write('saved_file.yaml', saved_info)
         exit
       end
       puts 'Please enter a valid letter:'
@@ -49,11 +49,10 @@ class Rules
     puts drawing(turn_count)
     puts message
     puts "The word to find is '#{present_word(guess_array)}'"
-    turns_taken = letter_repo.length + (guess_array & keyword).length
+    turns_taken = (letter_repo - guess_array).length + (guess_array & keyword).length
     puts "\nYou have #{lifes - turn_count + 1} lives left. You've guessed #{turns_taken} times"
     puts "Already chosen letters: [#{present_word(letter_repo - guess_array)}]"
     puts 'Please enter a letter, or type "save" to save & exit your game:'
-    
   end
 
   def letter_check_message(letter_guessed, check_letter)
@@ -61,17 +60,15 @@ class Rules
   end
 
   def to_yaml(guess_array, turn_count, letter_repo, keyword)
-    YAML.dump ({
-      keyword: keyword,
-      guess_array: guess_array,
-      turn_count: turn_count,
-      letter_repo: letter_repo
-    })
+    YAML.dump({
+                keyword: keyword,
+                guess_array: guess_array,
+                turn_count: turn_count,
+                letter_repo: letter_repo
+              })
   end
 
   def self.from_yaml(string)
-    data = YAML.load(string)
-    data
+    YAML.load(string)
   end
-
-end 
+end

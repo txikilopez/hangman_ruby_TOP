@@ -1,15 +1,13 @@
-
-require_relative 'chooseword.rb'
-require_relative 'rules.rb'
+require_relative 'chooseword'
+require_relative 'rules'
 require 'colorize'
-
 
 class ChooseWord < Rules
   WORDS = File.readlines('google-10000-english-no-swears.txt').map(&:chomp)
 
-  def initialize(shortest_word= 5, longest_word = 12)
+  def initialize(shortest_word = 5, longest_word = 12)
     @words_array = WORDS.select do |word|
-    word.length >= shortest_word && word.length <= longest_word
+      word.length >= shortest_word && word.length <= longest_word
     end
   end
 
