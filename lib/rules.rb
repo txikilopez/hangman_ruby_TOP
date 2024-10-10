@@ -14,7 +14,7 @@ class Rules
 
   def welcome_message(hidden_word, lifes)
     puts `clear`
-    puts 'Welcome to Hangman\n'
+    puts 'Welcome to Hangman'
     puts "You will have #{lifes} turns to guess a secret word."
     puts "The word to find is: #{present_word(hidden_word)}"
     puts drawing(1)
@@ -49,7 +49,8 @@ class Rules
     puts drawing(turn_count)
     puts message
     puts "The word to find is '#{present_word(guess_array)}'"
-    puts "\nYou have #{lifes - turn_count + 1} lives left. You've guessed #{letter_repo.length + (guess_array & keyword).length} times"
+    turns_taken = letter_repo.length + (guess_array & keyword).length
+    puts "\nYou have #{lifes - turn_count + 1} lives left. You've guessed #{turns_taken} times"
     puts "Already chosen letters: [#{present_word(letter_repo - guess_array)}]"
     puts 'Please enter a letter, or type "save" to save & exit your game:'
     

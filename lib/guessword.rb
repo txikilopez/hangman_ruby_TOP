@@ -38,14 +38,10 @@ class GuessWord < Rules
 
     #subsequent turns
     while @turn_count <= LIFES
-
       turn_message(@guess_array, LIFES, @turn_count, @letter_repository, message, @key_word)
-
       letter_guessed = check_input(gets.chomp, @letter_repository, @turn_count, @guess_array, @key_word) 
       @letter_repository.push(letter_guessed)
-      
       prior_guess_array = @guess_array.dup
-
       check_guessed_letter(letter_guessed)
 
       if prior_guess_array == @guess_array
