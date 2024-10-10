@@ -1,24 +1,28 @@
 ---
 :keyword:
-- f
-- o
-- r
-- m
-- i
-- "n"
-- g
-:guess_array:
-- f
-- o
-- _
-- _
-- _
-- _
-- _
-:turn_count: 4
-:letter_repo:
-- a
+- d
 - e
-- b
-- f
+- s
+- k
+- t
 - o
+- p
+- s
+:guess_array:
+- _
+- _
+- _
+- _
+- _
+- o
+- _
+- _
+:turn_count: 7
+:letter_repo:
+- f
+- b
+- r
+- "y"
+- o
+- a
+- w

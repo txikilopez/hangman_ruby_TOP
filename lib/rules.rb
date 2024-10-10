@@ -30,7 +30,7 @@ class Rules
       exit
     end
 
-    while character.length != 1 || character.class != String || (character =~ /[a-z]/) != 0 || letter_repository.include?(character)
+    while character.length != 1 || (character =~ /[a-z]/) != 0 || letter_repository.include?(character) #|| character.class != String 
       if character == 'save'
         puts 'Saving game and exiting...'
         saved_info = to_yaml(guess_array, turn_count, letter_repository, keyword)
@@ -49,7 +49,7 @@ class Rules
     puts drawing(turn_count)
     puts message
     puts "The word to find is '#{present_word(guess_array)}'"
-    puts "\nYou have #{lifes - turn_count + 1} tries left"
+    puts "\nYou have #{lifes - turn_count + 1} lives left. You've guessed #{letter_repo.length + (guess_array & keyword).length} times"
     puts "Already chosen letters: [#{present_word(letter_repo - guess_array)}]"
     puts 'Please enter a letter, or type "save" to save & exit your game:'
     
