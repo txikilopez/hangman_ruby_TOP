@@ -8,10 +8,11 @@ class GuessWord < Rules
   attr_accessor :guess_array
   MAXTURNS = 7
 
-  def initialize(key_word)
-    @turn_count = 1
-    @key_word = key_word
-    @guess_array = Array.new(@key_word.length, "_")
+  def initialize(keyword, turn_count, guess_array_input, letter_repository_input)
+    @turn_count = turn_count.to_i
+    @key_word = keyword
+    @letter_repository = letter_repository_input
+    @guess_array = guess_array_input
     guessing
   end
 
@@ -24,28 +25,25 @@ class GuessWord < Rules
   end
 
   def guessing
-    letter_repository = []
-    show_instructions = Rules.new(@guess_array, LIFES) #welcome message
     
     #first turn
-    letter_guessed = check_input(gets.chomp, letter_repository)
-    letter_repository.push(letter_guessed)
-
-    check_guessed_letter(letter_guessed)
-    
-    letter_success = (letter_repository & @guess_array).length > 0
-
-    @turn_count +=1 unless letter_success
-
-    message = letter_check_message(letter_guessed, letter_success)
+    if @turn_count.to_i == 1
+      show_instructions = Rules.new(@guess_array, LIFES) #welcome message
+      letter_guessed = check_input(gets.chomp, @letter_repository)
+      @letter_repository.push(letter_guessed)
+      check_guessed_letter(letter_guessed)
+      letter_success = (@letter_repository & @guess_array).length > 0
+      @turn_count +=1 unless letter_success
+      message = letter_check_message(letter_guessed, letter_success)
+    end 
 
     #subsequent turns
     while @turn_count <= LIFES
 
-      turn_message(@guess_array, LIFES, @turn_count, letter_repository, message)
+      turn_message(@guess_array, LIFES, @turn_count, @letter_repository, message, @key_word)
 
-      letter_guessed = check_input(gets.chomp, letter_repository) 
-      letter_repository.push(letter_guessed)
+      letter_guessed = check_input(gets.chomp, @letter_repository) 
+      @letter_repository.push(letter_guessed)
       
       prior_guess_array = @guess_array.dup
 
@@ -63,7 +61,11 @@ class GuessWord < Rules
       end
     end
 
-    puts "You lost, word was '#{present_word(@key_word)}'" if @turn_count >= LIFES
+    if @turn_count >= LIFES
+      puts drawing(8)
+      puts "You lost, word was '#{present_word(@key_word)}'" 
+
+    end
 
   end
 end
