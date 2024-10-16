@@ -23,17 +23,19 @@ class GuessWord < Rules
     end
   end
 
+  def first_turn
+    Rules.new(@guess_array, LIFES) # welcome message
+    letter_guessed = check_input(gets.chomp, @letter_repository, @turn_count, @guess_array, @key_word)
+    @letter_repository.push(letter_guessed)
+    check_guessed_letter(letter_guessed)
+    letter_success = (@letter_repository & @guess_array).length > 0
+    @turn_count += 1 unless letter_success
+    letter_check_message(letter_guessed, letter_success)
+  end
+
   def guessing
     # first turn
-    if @turn_count.to_i == 1
-      Rules.new(@guess_array, LIFES) # welcome message
-      letter_guessed = check_input(gets.chomp, @letter_repository, @turn_count, @guess_array, @key_word)
-      @letter_repository.push(letter_guessed)
-      check_guessed_letter(letter_guessed)
-      letter_success = (@letter_repository & @guess_array).length > 0
-      @turn_count += 1 unless letter_success
-      message = letter_check_message(letter_guessed, letter_success)
-    end
+    message = first_turn if @turn_count.to_i == 1 && @letter_repository.length == 0
 
     # subsequent turns
     while @turn_count <= LIFES
